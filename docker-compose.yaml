@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:v1.2.1
+    container_name: oparl-surrealdb
+    restart: always
+    command: start --log debug file:/data/database.db
+    ports:
+      - 8000:8000
+    volumes:
+      - ./data:/data

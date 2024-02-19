@@ -5,7 +5,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:start": "docker compose up",
+    "db:backup": "surreal export --conn http://localhost:8000 --ns test --db test backup/export.surql"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
