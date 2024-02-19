@@ -1,11 +1,10 @@
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 import { BodyWithFunctions, fetchBody } from "./body";
 import {
   ConsultationWithFunctions,
   extendConsultationWithFunctions,
 } from "./consultation";
 import { File } from "./file";
-import { ObjectList } from "./objectList";
 
 interface PaperFunctions {
   getBody: () => Promise<BodyWithFunctions>;
@@ -54,12 +53,9 @@ export const fetchPapers = async (
   paperList: string[]
 ): Promise<PaperWithFunctions[]> => Promise.all(paperList.map(fetchPaper));
 
-export const fetchPaperExternalList = async (
-  paperExternalList: string
-): Promise<ObjectList<PaperWithFunctions>> =>
-  fetchList<PaperWithFunctions>(paperExternalList)().then(
-    (paperExternalList) => ({
-      ...paperExternalList,
-      data: paperExternalList.data.map(extendPaperWithFunctions),
-    })
+export const fetchPaperExternalList = (paperExternalList: string) =>
+  fetchItemExternalList<Paper, PaperWithFunctions>(
+    paperExternalList,
+    fetchList,
+    extendPaperWithFunctions
   );

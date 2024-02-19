@@ -7,7 +7,7 @@
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/dev.ts"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

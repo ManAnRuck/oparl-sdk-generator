@@ -1,4 +1,4 @@
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 import {
   OrganizationWithFunctions,
   fetchOrganizationExternalList,
@@ -106,10 +106,9 @@ export const fetchBodies = async (
   bodyList: string[]
 ): Promise<BodyWithFunctions[]> => Promise.all(bodyList.map(fetchBody));
 
-export const fetchBodyExternalList = async (
-  bodyExternalList: string
-): Promise<ObjectList<BodyWithFunctions>> =>
-  fetchList<BodyWithFunctions>(bodyExternalList)().then((bodyExternalList) => ({
-    ...bodyExternalList,
-    data: bodyExternalList.data.map(extendBodyWithFunctions),
-  }));
+export const fetchBodyExternalList = (bodyExternalList: string) =>
+  fetchItemExternalList<Body, BodyWithFunctions>(
+    bodyExternalList,
+    fetchList,
+    extendBodyWithFunctions
+  );

@@ -1,9 +1,8 @@
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 import { PaperWithFunctions, fetchPaper } from "./paper";
 import { AgendaItemWithFunctions, fetchAgendaItem } from "./agendaItem";
 import { MeetingWithFunctions, fetchMeeting } from "./meeting";
 import { OrganizationWithFunctions, fetchOrganizations } from "./organization";
-import { ObjectList } from "./objectList";
 
 interface ConsultationFunctions {
   getPaper?: () => Promise<PaperWithFunctions>;
@@ -59,12 +58,9 @@ export const fetchConsultations = async (
 ): Promise<ConsultationWithFunctions[]> =>
   Promise.all(consultationList.map(fetchConsultation));
 
-export const fetchConsultationExternalList = async (
-  consultationExternalList: string
-): Promise<ObjectList<ConsultationWithFunctions>> =>
-  fetchList<ConsultationWithFunctions>(consultationExternalList)().then(
-    (consultationExternalList) => ({
-      ...consultationExternalList,
-      data: consultationExternalList.data.map(extendConsultationWithFunctions),
-    })
+export const fetchConsultationExternalList = (consultationExternalList: string) =>
+  fetchItemExternalList<Consultation, ConsultationWithFunctions>(
+    consultationExternalList,
+    fetchList,
+    extendConsultationWithFunctions
   );

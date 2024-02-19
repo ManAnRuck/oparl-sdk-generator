@@ -1,4 +1,4 @@
-import { systemEntryPoint } from ".";
+import { systemEntryPoint } from "./dev";
 import { BodyWithFunctions, fetchBodyExternalList } from "./body";
 import { ObjectList } from "./objectList";
 

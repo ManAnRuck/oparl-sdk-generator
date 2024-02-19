@@ -1,11 +1,10 @@
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 import { OrganizationWithFunctions, fetchOrganization } from "./organization";
 import {
   AgendaItemWithFunctions,
   extendAgendaItemWithFunctions,
 } from "./agendaItem";
 import { File } from "./file";
-import { ObjectList } from "./objectList";
 
 interface MeetingFunctions {
   getOrganizations: () => Promise<OrganizationWithFunctions[]>;
@@ -58,12 +57,9 @@ export const fetchMeetings = async (
 ): Promise<MeetingWithFunctions[]> =>
   Promise.all(meetingList.map(fetchMeeting));
 
-export const fetchMeetingExternalList = async (
-  meetingExternalList: string
-): Promise<ObjectList<MeetingWithFunctions>> =>
-  fetchList<MeetingWithFunctions>(meetingExternalList)().then(
-    (meetingExternalList) => ({
-      ...meetingExternalList,
-      data: meetingExternalList.data.map(extendMeetingWithFunctions),
-    })
+export const fetchMeetingExternalList = (meetingExternalList: string) =>
+  fetchItemExternalList<Meeting, MeetingWithFunctions>(
+    meetingExternalList,
+    fetchList,
+    extendMeetingWithFunctions
   );

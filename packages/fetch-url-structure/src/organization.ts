@@ -1,4 +1,4 @@
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 import { MembershipWithFunctions, fetchMemberships } from "./membership";
 import { Meeting, fetchMeetingExternalList } from "./meeting";
 import { Consultation, fetchConsultationExternalList } from "./consultation";
@@ -63,12 +63,11 @@ export const fetchOrganizations = async (
 ): Promise<OrganizationWithFunctions[]> =>
   Promise.all(organizationList.map(fetchOrganization));
 
-export const fetchOrganizationExternalList = async (
+export const fetchOrganizationExternalList = (
   organizationExternalList: string
-): Promise<ObjectList<OrganizationWithFunctions>> =>
-  fetchList<OrganizationWithFunctions>(organizationExternalList)().then(
-    (organizationListResponse) => ({
-      ...organizationListResponse,
-      data: organizationListResponse.data.map(extendOrganizationWithFunctions),
-    })
+) =>
+  fetchItemExternalList<Organization, OrganizationWithFunctions>(
+    organizationExternalList,
+    fetchList,
+    extendOrganizationWithFunctions
   );

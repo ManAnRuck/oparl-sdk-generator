@@ -2,9 +2,8 @@ import {
   MembershipWithFunctions,
   extendMembershipWithFunctions,
 } from "./membership";
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 import { BodyWithFunctions, fetchBody } from "./body";
-import { ObjectList } from "./objectList";
 
 interface PersonFunctions {
   getBody: () => Promise<BodyWithFunctions>;
@@ -56,12 +55,9 @@ export const fetchPersons = async (
   personList: string[]
 ): Promise<PersonWithFunctions[]> => Promise.all(personList.map(fetchPerson));
 
-export const fetchPersonExternalList = async (
-  personExternalList: string
-): Promise<ObjectList<PersonWithFunctions>> =>
-  fetchList<PersonWithFunctions>(personExternalList)().then(
-    (personExternalList) => ({
-      ...personExternalList,
-      data: personExternalList.data.map(extendPersonWithFunctions),
-    })
+export const fetchPersonExternalList = (personExternalList: string) =>
+  fetchItemExternalList<Person, PersonWithFunctions>(
+    personExternalList,
+    fetchList,
+    extendPersonWithFunctions
   );

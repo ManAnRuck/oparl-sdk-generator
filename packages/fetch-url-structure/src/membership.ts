@@ -1,7 +1,6 @@
-import { ObjectList } from "@repo/types/index";
 import { Organization, fetchOrganization } from "./organization";
 import { Person, fetchPerson } from "./person";
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 
 export interface MembershipFunctions {
   getPerson?: () => Promise<Person>;
@@ -43,17 +42,14 @@ export const fetchMembership = async (
 ): Promise<MembershipWithFunctions> =>
   fetchPage<Membership>(url).then(extendMembershipWithFunctions);
 
-export const fetchMembershipExternalList = async (
-  membershipExternalList: string
-): Promise<ObjectList<MembershipWithFunctions>> =>
-  fetchList<MembershipWithFunctions>(membershipExternalList)().then(
-    (membershipExternalList) => ({
-      ...membershipExternalList,
-      data: membershipExternalList.data.map(extendMembershipWithFunctions),
-    })
-  );
-
 export const fetchMemberships = async (
   membershipList: string[]
 ): Promise<MembershipWithFunctions[]> =>
   Promise.all(membershipList.map(fetchMembership));
+
+export const fetchMembershipExternalList = (membershipExternalList: string) =>
+  fetchItemExternalList<Membership, MembershipWithFunctions>(
+    membershipExternalList,
+    fetchList,
+    extendMembershipWithFunctions
+  );

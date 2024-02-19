@@ -1,8 +1,7 @@
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 import { MeetingWithFunctions, fetchMeeting } from "./meeting";
 import { AgendaItemWithFunctions, fetchAgendaItem } from "./agendaItem";
 import { PaperWithFunctions, fetchPaper } from "./paper";
-import { ObjectList } from "./objectList";
 
 interface FileFunctions {
   getMasterFile?: () => Promise<FileWithFunctions>;
@@ -68,10 +67,9 @@ export const fetchFiles = async (
   fileList: string[]
 ): Promise<FileWithFunctions[]> => Promise.all(fileList.map(fetchFile));
 
-export const fetchFileExternalList = async (
-  fileExternalList: string
-): Promise<ObjectList<FileWithFunctions>> =>
-  fetchList<FileWithFunctions>(fileExternalList)().then((fileExternalList) => ({
-    ...fileExternalList,
-    data: fileExternalList.data.map(extendFileWithFunctions),
-  }));
+export const fetchFileExternalList = (fileExternalList: string) =>
+fetchItemExternalList<File, FileWithFunctions>(
+  fileExternalList,
+  fetchList,
+  extendFileWithFunctions
+);

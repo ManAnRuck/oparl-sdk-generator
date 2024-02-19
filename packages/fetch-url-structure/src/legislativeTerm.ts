@@ -1,6 +1,5 @@
 import { BodyWithFunctions, fetchBody } from "./body";
-import { ObjectList } from "./objectList";
-import { fetchList, fetchPage } from "./utils";
+import { fetchItemExternalList, fetchList, fetchPage } from "./utils";
 
 interface LegislativeTermFunctions {
   getBody?: () => Promise<BodyWithFunctions>;
@@ -43,14 +42,11 @@ export const fetchLegislativeTerms = async (
 ): Promise<LegislativeTermWithFunctions[]> =>
   Promise.all(legislativeTermList.map(fetchLegislativeTerm));
 
-export const fetchLegislativeTermExternalList = async (
+export const fetchLegislativeTermExternalList = (
   legislativeTermExternalList: string
-): Promise<ObjectList<LegislativeTermWithFunctions>> =>
-  fetchList<LegislativeTermWithFunctions>(legislativeTermExternalList)().then(
-    (legislativeTermExternalList) => ({
-      ...legislativeTermExternalList,
-      data: legislativeTermExternalList.data.map(
-        extendLegislativeTermWithFunctions
-      ),
-    })
+) =>
+  fetchItemExternalList<LegislativeTerm, LegislativeTermWithFunctions>(
+    legislativeTermExternalList,
+    fetchList,
+    extendLegislativeTermWithFunctions
   );
